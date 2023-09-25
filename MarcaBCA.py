@@ -35,7 +35,7 @@ lista_OMs=[
    'GLOG GL','GLOG-GL','GRUPO LOGÍSTICO DO GALEÃO','GLOGGL',
    'MTAB','MISSÃO TÉCNICA AERONÁUTICA BRASILEIRA NA BOLÍVIA',
    'DIRAP','DIRETORIA DE ADMINISTRAÇÃO DO PESSOAL',
-   ' DIRSA','DIRETORIA DE SAÚDE DA AERONÁUTICA',
+   'DIRSA','DIRETORIA DE SAÚDE DA AERONÁUTICA', '/DIRSA',
    'CGABEG','CENTRO GERONTOLÓGICO DE AERONÁUTICA BRIGADEIRO EDUARDO GOMES',
    'CBNB','COLÉGIO BRIGADEIRO NEWTON BRAGA',
    'SERIPA III','TERCEIRO SERVIÇO REGIONAL DE INVESTIGAÇÃO E PREVENÇÃO DE ACIDENTES AERONÁUTICOS','SERIPAIII',
@@ -43,20 +43,20 @@ lista_OMs=[
    'PAMB RJ','PAMB-RJ','PARQUE DE MATERIAL BÉLICO DE AERONÁUTICA DO RIO DE JANEIRO','PAMBRJ',
    'DTCEA-GL','DTCEA GL','DESTACAMENTO DE CONTROLE DO ESPAÇO AÉREO DO GALEÃO','DTCEAGL',
    '1/2 GT','1°/2° GT','1°/2°GT','PRIMEIRO ESQUADRÃO DO SEGUNDO GRUPO DE TRANSPORTE','1/2GT','1°/2°GT','1º/2º GT','1º/2ºGT',
-   ' 1GCC',' 1 GCC','PRIMEIRO GRUPO DE COMUNICAÇÕES E CONTROLE',' 1° GCC',' 1°GCC',' 1ºGCC',' 1º GCC',r'1?/1??GT',
-   '1/1 GT','1°/1° GT','1°/1°GT','PRIMEIRO ESQUADRÃO DO PRIMEIRO GRUPO DE TRANSPORTE','1/1GT','1°/1°GT','1º/1º GT','1º/1ºGT',
+   '1GCC','1 GCC','PRIMEIRO GRUPO DE COMUNICAÇÕES E CONTROLE','1° GCC','1°GCC','1ºGCC','1º GCC', '/1 GCC',
+   '1/1 GT','1°/1° GT','1°/1°GT','PRIMEIRO ESQUADRÃO DO PRIMEIRO GRUPO DE TRANSPORTE','1/1 GT',r'1?/1? GT',r'1?/1?GT', 
    '2/2 GT','2°/2° GT','2°/2°GT','SEGUNDO ESQUADRÃO DO SEGUNDO GRUPO DE TRANSPORTE','2°/2°GT','2/2GT','2º/2º GT','2º/2ºGT',
    'LAQFA','LABORATÓRIO QUÍMICO-FARMACÊUTICO DE AERONÁUTICA',
    'CTLA','CENTRO DE TRANSPORTE LOGÍSTICO DE AERONÁUTICA',
    'ALA 11','BASE AÉREA DO GALEÃO','ALA11',
    'CIMAER','CENTRO INTEGRADO DE METEOROLOGIA DE AERONÁUTICA',
-   ' CAE ','CENTRO DE AQUISIÇÕES ESPECÍFICAS',' CAE/', '/CAE'
+   ' CAE ','CENTRO DE AQUISIÇÕES ESPECÍFICAS',' CAE/', '/CAE',
    'COPE-S','CENTRO DE OPERAÇÕES ESPACIAIS SECUNDÁRIO','COPE S',
    'GSD-GL','GRUPO DE SEGURANÇA E DEFESA DO GALEÃO','GSDGL',
    'hfag','HOSPITAL DE FORÇA AÉREA DO GALEÃO']
 
 OMs= [unidecode(padrao.upper()) for padrao in lista_OMs] #remove os acentos das OMs da lista e transforma em letras maiúsculas
-print(OMs)
+#print(OMs)
 
 
 def TrataArquivo(arquivo): #função que trata o arquivo e retorna o conteúdo do arquivo
@@ -100,7 +100,7 @@ def MarcaOMsApoiadas(*args):
   
 #LISTA DAS PALAVRAS QUE DEVERÃO SER DESMARCADAS:
 PalavrasChave=[' PORTARIA DIRAP ', ' da PORTARIA ', '\tPortaria Dirap n', '\nPortaria DIRAP n°', 'Subdiretor Interino de Pessoal Militar da Dirap', 
-'Subdiretor Interino de Pessoal Civil da Dirap', '/DIRAP',  'DIRAP nº', ' DIRAP Nº ', 'Portaria DIRSA', 'Portaria DIRSA nº', '/DIRSA']
+'Subdiretor Interino de Pessoal Civil da Dirap', '/DIRAP',  'DIRAP nº', ' DIRAP Nº ', 'Portaria DIRSA', 'Portaria DIRSA nº']
 
 nannot=0
 def removeHighlightv2(pdf_marcado, palavras_para_desmarcar):
