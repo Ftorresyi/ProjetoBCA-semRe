@@ -1,0 +1,71 @@
+E se for a palavra 1°/2° GT? que podera aparecer no texto escrita como 1/2 GT, 1°/2°GT ou 1°/2° GT (com espaço ou sem espaço?)
+
+
+Para lidar com variações de espaçamento e caracteres especiais como ‘°’, você pode usar expressões regulares (regex) mais complexas. Aqui está um exemplo de como você pode fazer isso:
+
+Python
+Esse código é gerado por IA. Examine e use com cuidado. Visite nossas Perguntas Frequentes para obter mais informações.
+
+import re
+from unidecode import unidecode
+
+# Sua lista de palavras
+lista = ['1°/2° GT', '1/2 GT', '1°/2°GT', 'cachorro', 'pássaro', 'peixe']
+
+# A palavra que você está procurando
+palavra = '1°/2° GT'
+
+# Remova os acentos da palavra procurada
+palavra = unidecode(palavra)
+
+# Substitua '/' por '\/' e adicione '\s*' para lidar com espaços opcionais
+palavra = palavra.replace('/', r'\/')
+palavra = re.sub(r'(\/)', r'\s*\1\s*', palavra)
+
+# Crie o padrão regex
+padrao = re.compile(palavra, re.IGNORECASE)
+
+# Use uma compreensão de lista para encontrar a palavra na lista
+resultado = [w for w in lista if padrao.search(unidecode(w))]
+
+print(resultado)
+Neste exemplo, a função re.sub() é usada para substituir ‘/’ por ‘/’ e adicionar ‘\s*’ antes e depois de cada ‘/’, o que corresponde a zero ou mais espaços. Isso permite que você encontre correspondências independentemente de haver espaços antes ou depois do ‘/’.
+
+Espero que isso ajude! Se você tiver mais perguntas, fique à vontade para perguntar.
+
+
+
+
+
+se minha lista tiver escrito Cao e a palavra procurada estiver escrita Cão, como faço para encontrar essa palavra mesmo assim
+
+Copiar
+Para lidar com acentos e caracteres especiais em Python, você pode usar a biblioteca unidecode. Esta biblioteca irá remover os acentos e caracteres especiais das palavras, permitindo que você compare palavras como ‘Cao’ e ‘Cão’. Aqui está um exemplo de como você pode fazer isso:
+
+Python
+Esse código é gerado por IA. Examine e use com cuidado. Visite nossas Perguntas Frequentes para obter mais informações.
+
+import re
+from unidecode import unidecode
+
+# Sua lista de palavras
+lista = ['Cao', 'cachorro', 'pássaro', 'peixe']
+
+# A palavra que você está procurando
+palavra = 'Cão'
+
+# Remova os acentos da palavra procurada
+palavra = unidecode(palavra)
+
+# Crie o padrão regex
+padrao = re.compile(palavra, re.IGNORECASE)
+
+# Use uma compreensão de lista para encontrar a palavra na lista
+resultado = [w for w in lista if padrao.search(unidecode(w))]
+
+print(resultado)
+Neste exemplo, a função unidecode() é usada para remover os acentos tanto da palavra procurada quanto das palavras na lista antes de compará-las. Isso permite que você encontre correspondências independentemente de acentos ou caracteres especiais.
+
+Por favor, note que você precisará instalar a biblioteca unidecode antes de poder usá-la. Você pode fazer isso executando pip install unidecode no seu terminal.
+
+Espero que isso ajude! Se você tiver mais perguntas, fique à vontade para perguntar.

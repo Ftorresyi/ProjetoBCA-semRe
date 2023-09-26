@@ -40,7 +40,7 @@ lista_OMs=[
   'PAMB RJ','PAMB-RJ','PARQUE DE MATERIAL BÉLICO DE AERONÁUTICA DO RIO DE JANEIRO','PAMBRJ',
   'DTCEA-GL','DTCEA GL','DESTACAMENTO DE CONTROLE DO ESPAÇO AÉREO DO GALEÃO','DTCEAGL',
   '1/2 GT','1°/2° GT','1°/2°GT','PRIMEIRO ESQUADRÃO DO SEGUNDO GRUPO DE TRANSPORTE','1/2GT','1°/2°GT','1º/2º GT','1º/2ºGT',
-  '1GCC','1 GCC','PRIMEIRO GRUPO DE COMUNICAÇÕES E CONTROLE','1° GCC','1°GCC','1ºGCC','1º GCC', '/1 GCC',
+  ' 1GCC',' 1 GCC',' PRIMEIRO GRUPO DE COMUNICAÇÕES E CONTROLE',' 1° GCC',' 1°GCC',' 1ºGCC',' 1º GCC', '/1 GCC',
   '1/1 GT','1°/1° GT','1°/1°GT','PRIMEIRO ESQUADRÃO DO PRIMEIRO GRUPO DE TRANSPORTE','1/1 GT',r'1?/1? GT',r'1?/1?GT', 
   '2/2 GT','2°/2° GT','2°/2°GT','SEGUNDO ESQUADRÃO DO SEGUNDO GRUPO DE TRANSPORTE','2°/2°GT','2/2GT','2º/2º GT','2º/2ºGT',
   'LAQFA','LABORATÓRIO QUÍMICO-FARMACÊUTICO DE AERONÁUTICA',
@@ -52,8 +52,10 @@ lista_OMs=[
   'GSD-GL','GRUPO DE SEGURANÇA E DEFESA DO GALEÃO','GSDGL',
   'hfag','HOSPITAL DE FORÇA AÉREA DO GALEÃO',]
 
-#OMs= [unidecode(padrao.upper()) for padrao in lista_OMs] #remove os acentos das OMs da lista e transforma em letras maiúsculas
-#print(OMs) #Teste ->Até aqui tudo OK
+
+OMs= [unidecode(padrao.upper()) for padrao in lista_OMs] #remove os acentos das OMs da lista e transforma em letras maiúsculas
+#OMs=lista_OMs
+print(OMs) #Teste ->Até aqui tudo OK
 
 #Arquivo principal do BCA em PDF que será usado:
 BCAemPDF=input("Digite o nome do arquivo BCA que será lido, sem a extensão: ")+".pdf"
@@ -65,7 +67,7 @@ def normaliza(palavra):
   #Converter para maiúsculas:
   palavra=palavra.upper()
   #Remover espaços em branco:
-  palavra=palavra.strip()
+  #palavra=palavra.strip()
   #Remover pontuação:
   palavra=''.join(ch for ch in palavra if ch not in string.punctuation)
   return palavra
@@ -74,19 +76,16 @@ def normaliza(palavra):
 OMs = [normaliza(palavra) for palavra in lista_OMs]
 
 #Normalizar as palavras do PDF:
-palavras_normalizadas = []
-pdf = fitz.open(BCAemPDF)
-for page in pdf:
-  texto = page.getText() #extrai o texto da página
-  palavras = texto.split() #cria uma lista de palavras com o texto de cada página
-  #Normaliza cada palavra e adiciona à lista de palavras normalizadas:
-  for palavra in palavras:
-    palavras_normalizadas.append(normaliza(palavra))
-
-
-#LISTA DAS PALAVRAS QUE DEVERÃO SER DESMARCADAS:
-PalavrasChave=[' PORTARIA DIRAP ', ' da PORTARIA ', '\tPortaria Dirap n', '\nPortaria DIRAP n°', 'Subdiretor Interino de Pessoal Militar da Dirap', 
-'Subdiretor Interino de Pessoal Civil da Dirap', '/DIRAP',  'DIRAP nº', ' DIRAP Nº ', 'Portaria DIRSA', 'Portaria DIRSA nº']
+def normalizaPDF(BCAemPDF):
+  palavras_normalizadas = []
+  pdf = fitz.open(BCAemPDF)
+  for page in pdf:
+    texto = page.getText() #extrai o texto da página
+    palavras = texto.split() #cria uma lista de palavras com o texto de cada página
+    #Normaliza cada palavra e adiciona à lista de palavras normalizadas:
+    for palavra in palavras:
+      palavras_normalizadas.append(normaliza(palavra))
+  pdf.save("bca_do_dia_marcado.pdf")
 
 
 sumannot = 0
@@ -107,6 +106,11 @@ def MarcaOMsApoiadas(*args):
   print('Foram encontradas: ', sumannot, ' anotações no total')
   BcadoDia.save("bca_do_dia_marcado.pdf")
 
+
+
+#LISTA DAS PALAVRAS QUE DEVERÃO SER DESMARCADAS:
+PalavrasChave=[' PORTARIA DIRAP ', ' da PORTARIA ', '\tPortaria Dirap n', '\nPortaria DIRAP n°', 'Subdiretor Interino de Pessoal Militar da Dirap', 
+'Subdiretor Interino de Pessoal Civil da Dirap',  'DIRAP nº', ' DIRAP Nº ', 'Portaria DIRSA', 'Portaria DIRSA nº', 'Portarias DIRAP',]
 
 nannot=0
 def removeHighlightv2(pdf_marcado, palavras_para_desmarcar):
@@ -130,10 +134,7 @@ def removeHighlightv2(pdf_marcado, palavras_para_desmarcar):
   print('Foram removidas ', nannot, ' anotações')
   BcadoDia.save("Marcado_"+ os.path.basename(BCAemPDF))
   
-
-#data_atual = str(date.today())
-#nBCA=input('Digite o número do BCA que será lido: ')
-#dataBCA=input('Digite a data do BCA: ')
+normalizaPDF(BCAemPDF)
 MarcaOMsApoiadas(BCAemPDF)
 removeHighlightv2('bca_do_dia_marcado.pdf', PalavrasChave)
 print('O Total de palavras encontradas para transcrição são: ', sumannot-nannot)
