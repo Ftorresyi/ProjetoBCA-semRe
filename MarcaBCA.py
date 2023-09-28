@@ -53,9 +53,9 @@ lista_OMs=[
   'hfag','HOSPITAL DE FORÇA AÉREA DO GALEÃO',]
 
 
-OMs= [unidecode(padrao.upper()) for padrao in lista_OMs] #remove os acentos das OMs da lista e transforma em letras maiúsculas
+#OMs= [unidecode(padrao.upper()) for padrao in lista_OMs] #remove os acentos das OMs da lista e transforma em letras maiúsculas
 #OMs=lista_OMs
-print(OMs) #Teste ->Até aqui tudo OK
+#print(OMs) #Teste ->Até aqui tudo OK
 
 #Arquivo principal do BCA em PDF que será usado:
 BCAemPDF=input("Digite o nome do arquivo BCA que será lido, sem a extensão: ")+".pdf"
@@ -66,14 +66,19 @@ def normaliza(palavra):
   palavra = unidecode(palavra)
   #Converter para maiúsculas:
   palavra=palavra.upper()
-  #Remover espaços em branco:
-  #palavra=palavra.strip()
+  #Expressão Regular:
+  palavra=palavra.replace('/',r'\/') #se quisermos procurar literalmente pelo caractere ‘/’, precisamos escapá-lo usando '', daí ‘/'.
+  palavra=re.sub(r'(\/)',r'\s*\1\s*', palavra) # Isso permite que você encontre correspondências independentemente de haver espaços antes ou depois do ‘/'.
+  #Compilar o padão Regex:
+  padrao = re.compile(palavra, re.IGNORECASE)
   #Remover pontuação:
-  palavra=''.join(ch for ch in palavra if ch not in string.punctuation)
+  #palavra=''.join(ch for ch in palavra if ch not in string.punctuation)
+  
   return palavra
 
 #Normalizar todas as palavras da lista de OMs
 OMs = [normaliza(palavra) for palavra in lista_OMs]
+print(OMs) #Teste ->Até aqui tudo OK
 
 #Normalizar as palavras do PDF:
 def normalizaPDF(BCAemPDF):
@@ -84,7 +89,7 @@ def normalizaPDF(BCAemPDF):
     palavras = texto.split() #cria uma lista de palavras com o texto de cada página
     #Normaliza cada palavra e adiciona à lista de palavras normalizadas:
     for palavra in palavras:
-      palavras_normalizadas.append(normaliza(palavra))
+      palavras_normalizadas.append(normaliza(palavra)) #chama a função normaliza e adiciona na lista 
   pdf.save("bca_do_dia_marcado.pdf")
 
 
@@ -138,7 +143,7 @@ normalizaPDF(BCAemPDF)
 MarcaOMsApoiadas(BCAemPDF)
 removeHighlightv2('bca_do_dia_marcado.pdf', PalavrasChave)
 print('O Total de palavras encontradas para transcrição são: ', sumannot-nannot)
-os.remove("bca_do_dia_marcado.pdf")
+#os.remove("bca_do_dia_marcado.pdf")
 
 
 
