@@ -66,11 +66,11 @@ def normaliza(palavra):
   palavra = unidecode(palavra)
   #Converter para maiúsculas:
   palavra=palavra.upper()
-  #Expressão Regular:
+  """ #Expressão Regular:
   palavra=palavra.replace('/',r'\/') #se quisermos procurar literalmente pelo caractere ‘/’, precisamos escapá-lo usando '', daí ‘/'.
   palavra=re.sub(r'(\/)',r'\s*\1\s*', palavra) # Isso permite que você encontre correspondências independentemente de haver espaços antes ou depois do ‘/'.
   #Compilar o padão Regex:
-  padrao = re.compile(palavra, re.IGNORECASE)
+  padrao = re.compile(palavra, re.IGNORECASE) """
   #Remover pontuação:
   #palavra=''.join(ch for ch in palavra if ch not in string.punctuation)
   
@@ -143,7 +143,7 @@ normalizaPDF(BCAemPDF)
 MarcaOMsApoiadas(BCAemPDF)
 removeHighlightv2('bca_do_dia_marcado.pdf', PalavrasChave)
 print('O Total de palavras encontradas para transcrição são: ', sumannot-nannot)
-#os.remove("bca_do_dia_marcado.pdf")
+os.remove("bca_do_dia_marcado.pdf")
 
 
 
